@@ -1,7 +1,4 @@
-from cProfile import label
 import datetime as dt
-from math import floor
-import pandas as pd
 import plotly_express as px
 import streamlit as st
 import yfinance as yf
