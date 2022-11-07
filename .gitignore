@@ -4,3 +4,4 @@ F1/f1_venv/
 Stock/stock_venv/
 AutoML/logs.log
 AutoML/.python-version
+AutoML/*.pkl
