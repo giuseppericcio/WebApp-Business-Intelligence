@@ -4,6 +4,12 @@ import pandas as pd
 from streamlit_pandas_profiling import st_profile_report
 import os
 
+# Configurazione pagina Streamlit
+st.set_page_config(
+    page_title = "AutoML",
+    layout  = "wide"
+)
+
 # Se il dataset è già stato caricato faccio il retrieval di questo
 if os.path.exists('./dataset.csv'):
     df = pd.read_csv('dataset.csv', index_col=None)
