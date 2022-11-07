@@ -1,4 +1,3 @@
-from copyreg import constructor
 import pandas as pd
 import plotly_express as px
 import streamlit as st
@@ -13,6 +12,7 @@ st.set_page_config(
 
 st.title(':racing_car: F1')
 
+st.image("https://storage.googleapis.com/kaggle-datasets-images/468218/878459/e2b865299a720df627331f8d213eb8f9/dataset-cover.jpg?t=2020-01-07-17-56-51")
 
 def get_constructor():
     circuits = pd.read_csv('./Dataset/circuits.csv')

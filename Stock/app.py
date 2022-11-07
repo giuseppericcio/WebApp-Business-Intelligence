@@ -87,7 +87,7 @@ seasonality_selection = st.sidebar.radio(
 )
 
 with st.sidebar.expander('Seasonality components:'):
-    weekly_selection = st.checkbox('Weekly')
+    weekly_selection = st.checkbox('Weekly', value = True)
     monthly_selection = st.checkbox('Monthly')
     yearly_selection = st.checkbox('Yearly', value = True)
 
@@ -120,19 +120,18 @@ with st.spinner('Fitting'):
     model = Prophet(
         growth = growth_selection,
         seasonality_mode = seasonality_selection,
+        weekly_seasonality = weekly_selection,
         yearly_seasonality = yearly_selection,
         changepoint_prior_scale = changepoint_prior_selection
     )
-    if weekly_selection:
-        model.add_seasonality('Weekly', period = 7, fourier_order = 4)
     if monthly_selection:
-        model.add_seasonality('Monthly', period = 30, fourier_order = 4)
+        model.add_seasonality('Monthly', period = 30.5, fourier_order = 5)
     if holiday_country_selection != 'None':
         model.add_country_holidays(holiday_country_selection)
     model.fit(prophet_df)
 
 with st.spinner('Predizione'):
-    future = model.make_future_dataframe(horizon_selection)
+    future = model.make_future_dataframe(horizon_selection, freq = 'D')
     if growth_selection == 'logistic':
         future['cap'] = cap
         future['floor'] = floor
@@ -141,8 +140,8 @@ with st.spinner('Predizione'):
 st.dataframe(forecast)
 
 fig = px.scatter(prophet_df, x='ds', y='y', labels = {'ds':'Day', 'y':'Close'})
-fig.add_scatter(x=forecast['ds'], y = forecast['yhat'])
-fig.add_scatter(x=forecast['ds'], y = forecast['yhat_lower'])
-fig.add_scatter(x=forecast['ds'], y = forecast['yhat_upper'])
+fig.add_scatter(x=forecast['ds'], y = forecast['yhat'], name = 'yhat')
+fig.add_scatter(x=forecast['ds'], y = forecast['yhat_lower'], name = 'yhat_lower')
+fig.add_scatter(x=forecast['ds'], y = forecast['yhat_upper'], name = 'yhat_upper')
 
 st.plotly_chart(fig)
